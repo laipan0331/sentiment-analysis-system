@@ -8,7 +8,7 @@ public class DistributionController {
 
     @GetMapping("/distribution")
     public String distributionPage() {
-        // 返回名为 "chart" 的模板（即 chart.html）
+
         return "chart";
     }
 }

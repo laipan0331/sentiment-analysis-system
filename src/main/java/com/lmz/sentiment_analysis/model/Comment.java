@@ -23,7 +23,6 @@ public class Comment {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // 新增字段：记录评论所属用户的 ID
     private Long userId;
 
     public Comment() {}

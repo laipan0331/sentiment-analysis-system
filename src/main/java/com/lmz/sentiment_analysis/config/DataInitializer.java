@@ -26,7 +26,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // 创建角色
+
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");
         if (adminRole == null) {
             adminRole = new Role("ROLE_ADMIN");
@@ -39,7 +39,7 @@ public class DataInitializer implements CommandLineRunner {
             roleRepository.save(userRole);
         }
 
-        // 创建管理员账户
+
         Optional<User> adminUserOpt = userRepository.findByUsername("admin");
         if (adminUserOpt.isEmpty()) {
             User adminUser = new User();

@@ -24,11 +24,9 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // 构造函数
     public User() {
     }
 
-    // getter 和 setter 方法
     public Long getId() {
         return id;
     }
@@ -53,7 +51,6 @@ public class User {
         this.password = password;
     }
 
-    // 角色相关的 getter 和 setter
     public Set<Role> getRoles() {
         return roles;
     }

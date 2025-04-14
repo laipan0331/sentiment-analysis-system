@@ -23,14 +23,12 @@ public class CommentController {
         return ResponseEntity.ok(savedComment);
     }
 
-    // 当前用户查看自己的评论
     @GetMapping("/my")
     public ResponseEntity<List<Comment>> getMyComments() {
         List<Comment> myComments = commentService.getAllComments();
         return ResponseEntity.ok(myComments);
     }
 
-    // 新增接口：查看全局评论情感分布数据
     @GetMapping("/sentiment-distribution")
     public ResponseEntity<Map<String, Long>> getGlobalSentimentDistribution() {
         Map<String, Long> distribution = commentService.getGlobalSentimentDistribution();

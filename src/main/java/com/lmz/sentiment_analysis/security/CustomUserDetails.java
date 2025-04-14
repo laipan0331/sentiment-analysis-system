@@ -24,7 +24,6 @@ public class CustomUserDetails implements UserDetails {
         this.authorities = authorities;
     }
 
-    // 提供获取用户ID的方法
     public Long getId() {
         return id;
     }

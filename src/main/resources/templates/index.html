@@ -50,12 +50,11 @@
       background-color: #1976D2;
     }
 
-    /* 让三个按钮在一行内整齐排列 */
     .btn-group {
       margin-top: 30px;
-      display: flex;             /* 开启 Flex 布局 */
-      justify-content: center;   /* 在水平方向居中 */
-      gap: 20px;                 /* 按钮之间的间距 */
+      display: flex;
+      justify-content: center;
+      gap: 20px;
     }
 
     .btn-group a {
@@ -97,14 +96,14 @@
   </div>
 
   <h1>Sentiment Analysis</h1>
-  <!-- 评论提交表单；表单提交到 /comments/submit，由你的 Controller 处理 -->
+
   <form class="comment-form" th:action="@{/comments/submit}" method="post">
     <textarea name="content" placeholder="Please enter your comments..." rows="4" required></textarea>
     <br/>
     <button type="submit">Submit Your Comment</button>
   </form>
 
-  <!-- 三个按钮整齐排布在一行，添加管理员入口 -->
+
   <div class="btn-group">
     <a th:href="@{/login}">Back to Login</a>
     <a th:href="@{/distribution}">View Sentiment Distribution</a>
