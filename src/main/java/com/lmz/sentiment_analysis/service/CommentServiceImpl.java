@@ -5,22 +5,29 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.lmz.sentiment_analysis.model.Comment;
+import com.lmz.sentiment_analysis.model.User;
 import com.lmz.sentiment_analysis.repository.CommentRepository;
-import com.lmz.sentiment_analysis.util.SecurityUtil;
+import com.lmz.sentiment_analysis.repository.UserRepository;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final NLPProcessor nlpProcessor;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, NLPProcessor nlpProcessor) {
+    public CommentServiceImpl(CommentRepository commentRepository,
+                              NLPProcessor nlpProcessor,
+                              UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.nlpProcessor = nlpProcessor;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -56,19 +63,28 @@ public class CommentServiceImpl implements CommentService {
                 comment.setSentimentScore(0.50);
                 break;
         }
-        // 对于用户发布的评论（仅记录当前登录用户的评论）：
-        Long currentUserId = SecurityUtil.getCurrentUserId();
-        comment.setUserId(currentUserId);
+
+        // 获取当前登录用户
+        Long currentUserId = getCurrentUserId();
+        if (currentUserId != null) {
+            comment.setUserId(currentUserId);
+        }
+
         return commentRepository.save(comment);
     }
 
     /**
-     * 返回当前登录用户的评论（现有方法）
+     * 返回当前登录用户的评论
      */
     @Override
     public List<Comment> getAllComments() {
-        Long currentUserId = SecurityUtil.getCurrentUserId();
-        return commentRepository.findByUserId(currentUserId);
+        Long currentUserId = getCurrentUserId();
+        if (currentUserId != null) {
+            return commentRepository.findByUserId(currentUserId);
+        } else {
+            // 如果用户未登录，返回空列表或所有评论
+            return commentRepository.findAll();
+        }
     }
 
     /**
@@ -81,5 +97,21 @@ public class CommentServiceImpl implements CommentService {
                         Comment::getSentiment,
                         Collectors.counting()
                 ));
+    }
+
+    /**
+     * 获取当前登录用户ID的辅助方法
+     */
+    private Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() ||
+                "anonymousUser".equals(authentication.getPrincipal())) {
+            return null;
+        }
+
+        String username = authentication.getName();
+        return userRepository.findByUsername(username)
+                .map(User::getId)
+                .orElse(null);
     }
 }

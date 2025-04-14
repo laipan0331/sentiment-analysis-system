@@ -1,12 +1,14 @@
 package com.lmz.sentiment_analysis.security;
 
-import java.util.Collection;
+import com.lmz.sentiment_analysis.model.Role;
+import com.lmz.sentiment_analysis.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-/**
- * 自定义的用户详情类，用于封装用户登录信息
- */
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 public class CustomUserDetails implements UserDetails {
 
     private final Long id;

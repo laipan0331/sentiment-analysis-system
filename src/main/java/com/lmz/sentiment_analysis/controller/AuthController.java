@@ -28,7 +28,8 @@ public class AuthController {
             return "register";
         }
         try {
-            userService.registerUser(user.getUsername(), user.getPassword());
+            // 直接使用 registerNewUser 方法，传递 User 对象
+            userService.registerNewUser(user);
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             return "register";
@@ -46,4 +47,3 @@ public class AuthController {
         return "index";
     }
 }
-

@@ -1,35 +1,34 @@
 package com.lmz.sentiment_analysis.model;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String username;
 
-    @Column(nullable = false)
     private String password;
 
-    // 新增角色字段，假设使用字符串表示角色，如 "ROLE_USER"
-    @Column(nullable = false)
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    public User() {}
-
-    public User(String username, String password, String role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
+    // 构造函数
+    public User() {
     }
 
-    // Getter & Setter
-
+    // getter 和 setter 方法
     public Long getId() {
         return id;
     }
@@ -54,12 +53,25 @@ public class User {
         this.password = password;
     }
 
-    // 添加 getRole() 方法
-    public String getRole() {
-        return role;
+    // 角色相关的 getter 和 setter
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public boolean hasRole(String roleName) {
+        for (Role role : roles) {
+            if (role.getName().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

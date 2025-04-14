@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .nav-menu {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: #4CAF50;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .nav-menu a {
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .nav-menu a:hover {
+            background-color: #45a049;
+            border-radius: 3px;
+        }
+        .dashboard-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .user-info {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .user-info a {
+            margin-left: 10px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="user-info" th:if="${#authentication.isAuthenticated()}">
+        <span th:text="${#authentication.principal.username}">Username</span>
+        <span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"> (Admin)</span>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+
+    <h1>Admin Dashboard</h1>
+
+    <div class="nav-menu">
+        <a th:href="@{/admin}">Dashboard</a>
+        <a th:href="@{/admin/users}">Manage Users</a>
+        <a th:href="@{/admin/comments}">Manage Comments</a>
+        <a th:href="@{/distribution}">Sentiment Distribution</a>
+        <a th:href="@{/}">Comment Form</a>
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Welcome to Admin Dashboard</h2>
+        <p>From here you can manage users and view sentiment analysis data.</p>
+        <p>Use the navigation menu above to access different sections.</p>
+    </div>
+</div>
+</body>
+</html>
