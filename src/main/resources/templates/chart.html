@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentiment Distribution</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .chart-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .btn-group a {
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 4px;
+        }
+    </style>
+    <!-- 引入 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Global Sentiment Distribution</h1>
+<div class="btn-group">
+    <a th:href="@{/}">Back to Comment Form</a>
+    <a th:href="@{/login}">Back to Login</a>
+</div>
+<div class="chart-container">
+    <h3>Pie Chart (Percentage)</h3>
+    <canvas id="pieChart" width="400" height="400"></canvas>
+</div>
+<div class="chart-container">
+    <h3>Bar Chart (Count)</h3>
+    <canvas id="barChart" width="400" height="400"></canvas>
+</div>
+
+<script>
+    // 页面加载后通过 Ajax 调用后端获取全局情感分布数据
+    fetch('/api/comments/sentiment-distribution')
+        .then(response => response.json())
+        .then(data => {
+            // data 格式例如： { "very positive": 10, "positive": 25, "neutral": 15, "negative": 5, "very negative": 3 }
+            const labels = Object.keys(data);
+            const counts = Object.values(data);
+            const total = counts.reduce((sum, count) => sum + count, 0);
+            const percentages = counts.map(count => ((count / total) * 100).toFixed(2));
+
+            // 绘制饼图：显示百分比
+            var pieCtx = document.getElementById('pieChart').getContext('2d');
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: percentages,
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(153, 102, 255, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 绘制柱状图：显示原始计数
+            var barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Comment Count',
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(153, 102, 255, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Count' }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching distribution data:', error));
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comment Analysis Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            transition: background-color 0.5s ease;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .emoji {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        .result-details {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .btn-group {
+            margin-top: 20px;
+        }
+        .btn-group a {
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body th:style="'background-color:' + (${bgColor} != null ? ${bgColor} : '#FFFFFF')">
+<div class="container">
+    <div class="emoji" th:text="${emoji}">😊</div>
+    <div class="result-details">
+        <p>Sentiment: <span th:text="${sentiment}">Positive</span></p>
+        <p>Score: <span th:text="${score}">0.85</span></p>
+        <!-- 可选：展示提交的评论内容 -->
+        <p>Comment: <span th:text="${content}">Your comment here</span></p>
+    </div>
+    <div class="btn-group">
+        <a th:href="@{/}">Submit Another Comment</a>
+    </div>
+</div>
+</body>
+</html>

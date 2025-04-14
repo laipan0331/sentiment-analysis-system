@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User Sign Up</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Sign Up</h1>
+  <form th:action="@{/register}" th:object="${user}" method="post">
+    <div>
+      <label>username：</label>
+      <input type="text" th:field="*{username}" placeholder="Please enter your username" required />
+    </div>
+    <div>
+      <label>password：</label>
+      <input type="password" th:field="*{password}" placeholder="Please enter your password" required />
+    </div>
+    <div>
+      <button type="submit">Sign Up</button>
+    </div>
+  </form>
+  <div th:if="${error}">
+    <p style="color: red;" th:text="${error}"></p>
+  </div>
+  <p>already had an account? <a th:href="@{/login}">click to login</a></p>
+</div>
+</body>
+</html>
