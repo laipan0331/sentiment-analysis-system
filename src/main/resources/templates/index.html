@@ -75,24 +75,36 @@
       margin-bottom: 15px;
     }
 
-    .user-info a {
+    .user-info span {
       margin-left: 10px;
-      color: #4CAF50;
-      text-decoration: none;
+      color: #333;
     }
 
-    .user-info a:hover {
+    .logout-btn {
+      background: none;
+      border: none;
+      color: #4CAF50;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: inherit;
+      padding: 0;
+      margin-left: 10px;
+    }
+
+    .logout-btn:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
 <div class="container">
-  <!-- 添加用户信息显示区域 -->
+  <!-- 修改后的用户信息显示区域，使用表单提交logout -->
   <div class="user-info" th:if="${#authentication.isAuthenticated()}">
     <span th:text="${#authentication.principal.username}">Username</span>
     <span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"> (Admin)</span>
-    <a th:href="@{/logout}">Logout</a>
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+      <button type="submit" class="logout-btn">Logout</button>
+    </form>
   </div>
 
   <h1>Sentiment Analysis</h1>
@@ -102,7 +114,6 @@
     <br/>
     <button type="submit">Submit Your Comment</button>
   </form>
-
 
   <div class="btn-group">
     <a th:href="@{/login}">Back to Login</a>

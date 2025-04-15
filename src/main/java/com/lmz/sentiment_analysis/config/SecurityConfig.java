@@ -45,7 +45,10 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
+                        .logoutUrl("/logout")           // 明确指定退出URL
                         .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)    // 使会话失效
+                        .clearAuthentication(true)      // 清除认证信息
                         .permitAll()
                 )
                 .csrf(csrf -> csrf
