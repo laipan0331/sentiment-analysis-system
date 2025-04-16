@@ -10,25 +10,33 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
+// This class is a Spring Security component responsible for handling authentication failure during login attempts.
+// It customizes error messages based on the type of authentication exception encountered and redirects the user back to the login page with the appropriate error message stored in the session.
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
+    // This method is called when an authentication attempt fails.
+    // It retrieves the error message based on the exception type, stores it in the session,
+    // and redirects the user to the login page with an error flag.
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception)
             throws IOException, ServletException {
-        String errorMessage = "Invalid username or password";
+        // Declare errorMessage without an initial redundant assignment.
+        String errorMessage;
 
-        // Customize error messages based on exception type
+        // Customize error messages based on exception type.
         if (exception instanceof BadCredentialsException) {
             errorMessage = "Incorrect password";
         } else {
-            // Optionally, you can check for UsernameNotFoundException, etc.
+            // Use the exception's message for any other type of authentication error.
             errorMessage = exception.getMessage();
         }
-        // Store the error message in session (or request) so the login page can display it
+
+        // Store the error message in session so the login page can display it.
         request.getSession().setAttribute("errorMessage", errorMessage);
-        // Redirect to the login page with an error parameter
+
+        // Redirect to the login page with an error parameter.
         response.sendRedirect(request.getContextPath() + "/login?error");
     }
 }

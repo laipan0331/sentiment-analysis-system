@@ -1,11 +1,13 @@
 package com.lmz.sentiment_analysis.model;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
+//This entity represents a comment in the application. It stores the comment content,
+// sentiment analysis results (sentiment, emoji, sentiment score, background color),
+//creation timestamp, and the identifier of the user who posted the comment.
 public class Comment {
 
     @Id
@@ -25,14 +27,15 @@ public class Comment {
 
     private Long userId;
 
+    //Default constructor required by JPA.
     public Comment() {}
 
+    // Constructor to create a Comment with only content.
     public Comment(String content) {
         this.content = content;
     }
 
-    // Getter & Setter
-
+    // Getter & Setter methods for all properties
     public Long getId() {
         return id;
     }

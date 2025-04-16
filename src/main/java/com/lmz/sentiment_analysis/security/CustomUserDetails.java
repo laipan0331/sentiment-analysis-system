@@ -9,13 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+//This class implements Spring Security's UserDetails interface to represent a custom security user.
+// It holds user information including id, username, password, and granted authorities (roles/permissions)
 public class CustomUserDetails implements UserDetails {
 
     private final Long id;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
-
+    //Constructs a new CustomUserDetails instance with the given user information and authorities.
     public CustomUserDetails(Long id, String username, String password,
                              Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
@@ -29,6 +31,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
+    // Represents the collection of roles/permissions assigned to the user.
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }

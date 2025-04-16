@@ -10,12 +10,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+//This service implements the UserService interface to manage user-related operations.
+//It provides methods to find a user by username, register new users (with password encryption and default role assignment)
+//It retrieves all users, delete a user by ID, and check if a user has administrative privileges.
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    //Constructor for UserServiceImpl. Dependencies are injected via constructor injection.
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
                            PasswordEncoder passwordEncoder) {
@@ -25,21 +29,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    //Finds a user by their username.
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
     @Override
+    //Registers a new user in the system:
+    // 1.Checks if the username already exists.
+    // 2.Encrypts the user's password.
+    // 3.Assigns the default role (ROLE_USER) to the new user.
+    // 4.Saves the user to the database.
     public User registerNewUser(User user) {
-        // 检查用户名是否已存在
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new RuntimeException("Username already exists: " + user.getUsername());
         }
 
-        // 加密密码
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // 分配默认角色 - ROLE_USER
         Role userRole = roleRepository.findByName("ROLE_USER");
         if (userRole == null) {
             userRole = new Role("ROLE_USER");

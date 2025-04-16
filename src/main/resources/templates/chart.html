@@ -26,7 +26,7 @@
             border-radius: 4px;
         }
     </style>
-    <!-- 引入 Chart.js -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -45,17 +45,15 @@
 </div>
 
 <script>
-    // 页面加载后通过 Ajax 调用后端获取全局情感分布数据
+
     fetch('/api/comments/sentiment-distribution')
         .then(response => response.json())
         .then(data => {
-            // data 格式例如： { "very positive": 10, "positive": 25, "neutral": 15, "negative": 5, "very negative": 3 }
             const labels = Object.keys(data);
             const counts = Object.values(data);
             const total = counts.reduce((sum, count) => sum + count, 0);
             const percentages = counts.map(count => ((count / total) * 100).toFixed(2));
 
-            // 绘制饼图：显示百分比
             var pieCtx = document.getElementById('pieChart').getContext('2d');
             new Chart(pieCtx, {
                 type: 'pie',
@@ -93,7 +91,6 @@
                 }
             });
 
-            // 绘制柱状图：显示原始计数
             var barCtx = document.getElementById('barChart').getContext('2d');
             new Chart(barCtx, {
                 type: 'bar',

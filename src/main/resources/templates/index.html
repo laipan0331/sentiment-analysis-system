@@ -98,7 +98,7 @@
 </head>
 <body>
 <div class="container">
-  <!-- 修改后的用户信息显示区域，使用表单提交logout -->
+
   <div class="user-info" th:if="${#authentication.isAuthenticated()}">
     <span th:text="${#authentication.principal.username}">Username</span>
     <span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"> (Admin)</span>
