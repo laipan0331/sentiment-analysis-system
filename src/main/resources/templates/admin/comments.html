@@ -84,7 +84,9 @@
     <div class="user-info" th:if="${#authentication.isAuthenticated()}">
         <span th:text="${#authentication.principal.username}">Username</span>
         <span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"> (Admin)</span>
-        <a th:href="@{/logout}">Logout</a>
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <button type="submit">Logout</button>
+        </form>
     </div>
 
     <h1>Manage Comments</h1>
