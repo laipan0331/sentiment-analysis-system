@@ -76,7 +76,7 @@ This will compile the source code and create a JAR file in the target/ directory
 
 #### 2. Create Docker Image  
 
-Then in terminal please run: 
+With your Docker Desktop running, in terminal please run: 
 
 ```
 docker build -t sentiment-analysis-system . 
