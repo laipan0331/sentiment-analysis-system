@@ -125,8 +125,11 @@ Once the Docker container is running:
 
 - Access admin dashboard by logging in as an admin and clicking "Admin Dashboard" 
 - Manage users: View all users and delete users if necessary 
-- Manage comments: View all comments and delete inappropriate content 
-
+- Manage comments: View all comments and delete inappropriate content
+- Submit comments on the main page 
+- View sentiment analysis results after submitting a comment 
+- View global sentiment distribution by clicking "View Sentiment Distribution"
+  
 ### Persistent Storage 
 
 The application uses an H2 database file stored in a Docker volume (./data:/app/data) to ensure data persistence between container restarts. 
