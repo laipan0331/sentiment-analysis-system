@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Sentiment Analysis System project.
+All notable changes to the Sentiment & Threat Text Analysis System project.
 
 ## [2.0.0] - 2026-02-16
 

@@ -1,4 +1,5 @@
-# Sentiment Analysis System with Hybrid NLP & Security Features
+# Sentiment & Threat Text Analysis System
+> Hybrid NLP Pipeline with Security Features
 
 A production-ready web application for analyzing sentiment in user comments with a hybrid NLP pipeline (CoreNLP + LLM), Redis caching, security threat detection, and comprehensive CI/CD pipeline.
 

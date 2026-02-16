@@ -1,8 +1,8 @@
 @echo off
-REM Sentiment Analysis System - Quick Start Script for Windows
+REM Sentiment & Threat Text Analysis System - Quick Start Script for Windows
 
 echo ========================================
-echo  Sentiment Analysis System
+echo  Sentiment ^& Threat Text Analysis System
 echo  Quick Start Launcher
 echo ========================================
 echo.

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * Security Analysis Service for detecting malicious content and analyzing
  * security-related sentiment in text. This adds a cybersecurity dimension
- * to the sentiment analysis system.
+ * to the Sentiment & Threat Text Analysis System.
  */
 @Service
 public class SecurityAnalysisService {

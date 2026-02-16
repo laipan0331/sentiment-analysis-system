@@ -13,8 +13,8 @@
 	<groupId>com.lmz</groupId>
 	<artifactId>sentiment-analysis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sentiment-analysis</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Sentiment & Threat Text Analysis System</name>
+	<description>Hybrid NLP system for sentiment analysis and security threat detection</description>
 	<url/>
 
 	<licenses>

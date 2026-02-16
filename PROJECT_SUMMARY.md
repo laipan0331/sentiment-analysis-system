@@ -1,4 +1,4 @@
-# 项目改进总结 - Sentiment Analysis System
+# 项目改进总结 - Sentiment & Threat Text Analysis System
 
 ## 📋 完成的改进
 
@@ -299,7 +299,7 @@ open http://localhost:8080
 5. **最佳实践**: CI/CD、容器化、测试驱动
 
 **适合面试的项目描述：**
-> "这是一个production-ready的情感分析系统，采用hybrid NLP pipeline结合
+> "这是一个production-ready的情感与威胁文本分析系统，采用hybrid NLP pipeline结合
 > Stanford CoreNLP和OpenAI GPT。系统集成了Redis缓存层优化性能，使用MySQL
 > 作为持久化存储，并具备安全威胁分析能力。完整的CI/CD pipeline确保代码质量
 > 和快速部署。架构设计考虑了可扩展性、成本优化和安全性。"

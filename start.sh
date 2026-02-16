@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Sentiment Analysis System - Quick Start Script
+# Sentiment & Threat Text Analysis System - Quick Start Script
 
 echo "========================================"
-echo " Sentiment Analysis System"
+echo " Sentiment & Threat Text Analysis System"
 echo " Quick Start Launcher"
 echo "========================================"
 echo ""
