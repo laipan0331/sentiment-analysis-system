@@ -1,6 +1,5 @@
 package com.lmz.sentiment_analysis.controller;
 
-import com.lmz.sentiment_analysis.model.Comment;
 import com.lmz.sentiment_analysis.repository.CommentRepository;
 import com.lmz.sentiment_analysis.service.UserService;
 import org.springframework.stereotype.Controller;

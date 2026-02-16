@@ -1,13 +1,9 @@
 package com.lmz.sentiment_analysis.security;
 
-import com.lmz.sentiment_analysis.model.Role;
-import com.lmz.sentiment_analysis.model.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 //This class implements Spring Security's UserDetails interface to represent a custom security user.
 // It holds user information including id, username, password, and granted authorities (roles/permissions)

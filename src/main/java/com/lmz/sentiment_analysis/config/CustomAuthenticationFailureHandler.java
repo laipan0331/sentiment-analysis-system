@@ -30,7 +30,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             errorMessage = "Incorrect password";
         } else {
             // Use the exception's message for any other type of authentication error.
-            errorMessage = exception.getMessage();
+            errorMessage = exception != null ? exception.getMessage() : "Unknown error";
         }
 
         // Store the error message in session so the login page can display it.

@@ -24,7 +24,7 @@ public class SecurityUtil {
             return ((UserDetails) principal).getUsername();
         }
         // Otherwise, fallback to the principal's toString representation.
-        return principal.toString();
+        return principal != null ? principal.toString() : null;
     }
     //Checks if the current authenticated user has the 'ROLE_ADMIN' authority.
     public static boolean isAdmin() {
