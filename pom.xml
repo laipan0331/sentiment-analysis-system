@@ -13,7 +13,7 @@
 	<groupId>com.lmz</groupId>
 	<artifactId>sentiment-analysis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Sentiment & Threat Text Analysis System</name>
+	<name>Sentiment &amp; Threat Text Analysis System</name>
 	<description>Hybrid NLP system for sentiment analysis and security threat detection</description>
 	<url/>
 
