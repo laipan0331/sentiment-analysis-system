@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,34 +19,37 @@ import com.lmz.sentiment_analysis.repository.CommentRepository;
 import com.lmz.sentiment_analysis.repository.UserRepository;
 
 @Service
-//This service implements the CommentService interface and provides functionality to add comments, retrieve comments, and compute a global sentiment distribution.
-// It uses an NLPProcessor to analyze the sentiment of the comment's content and sets various properties (emoji, background color, sentiment score) based on the analysis.
-//Additionally, it assigns the comment to the currently authenticated user when available.
 public class CommentServiceImpl implements CommentService {
 
+    private static final Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
+
     private final CommentRepository commentRepository;
-    private final NLPProcessor nlpProcessor;
+    private final HybridNLPProcessor hybridNLPProcessor;
     private final UserRepository userRepository;
 
     @Autowired
-    //Constructor with dependencies injected.
     public CommentServiceImpl(CommentRepository commentRepository,
-                              NLPProcessor nlpProcessor,
+                              HybridNLPProcessor hybridNLPProcessor,
                               UserRepository userRepository) {
         this.commentRepository = commentRepository;
-        this.nlpProcessor = nlpProcessor;
+        this.hybridNLPProcessor = hybridNLPProcessor;
         this.userRepository = userRepository;
     }
 
     @Override
-    //Adds a new comment with the analyzed sentiment and corresponding properties.
+    @CacheEvict(value = {"comments", "sentimentDistribution"}, allEntries = true)
     public Comment addComment(String content) {
         Comment comment = new Comment(content);
-        String sentiment = nlpProcessor.analyzeSentiment(content);
-        comment.setSentiment(sentiment);
+        
+        // Use hybrid NLP processor for sentiment analysis
+        HybridNLPProcessor.SentimentResult result = hybridNLPProcessor.analyzeSentiment(content);
+        comment.setSentiment(result.getSentiment());
 
-        // Set emoji, background color, and sentiment score based on the sentiment result.
-        switch (sentiment.toLowerCase()) {
+        logger.info("Sentiment analysis completed: sentiment={}, confidence={}, source={}", 
+                    result.getSentiment(), result.getConfidence(), result.getSource());
+
+        // Set emoji, background color, and sentiment score based on the sentiment result
+        switch (result.getSentiment().toLowerCase()) {
             case "very positive":
                 comment.setEmoji("😄");
                 comment.setBackgroundColor("#ffff00");
@@ -69,17 +76,17 @@ public class CommentServiceImpl implements CommentService {
                 comment.setSentimentScore(0.50);
                 break;
         }
-        // Retrieve the current user's ID and assign it to the comment.
+        
         Long currentUserId = getCurrentUserId();
         if (currentUserId != null) {
             comment.setUserId(currentUserId);
         }
-        // Save the comment using the repository and return the saved object.
+        
         return commentRepository.save(comment);
     }
 
     @Override
-    //Retrieves comments associated with the current user if authenticated, otherwise retrieves all comments.
+    @Cacheable(value = "comments", key = "#root.methodName + '_' + @commentServiceImpl.getCurrentUserId()")
     public List<Comment> getAllComments() {
         Long currentUserId = getCurrentUserId();
         if (currentUserId != null) {
@@ -90,7 +97,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    //Computes the global sentiment distribution across all comments.
+    @Cacheable(value = "sentimentDistribution")
     public Map<String, Long> getGlobalSentimentDistribution() {
         return commentRepository.findAll().stream()
                 .collect(Collectors.groupingBy(
@@ -99,9 +106,7 @@ public class CommentServiceImpl implements CommentService {
                 ));
     }
 
-    //Retrieves the current authenticated user's ID from the security context.
-    private Long getCurrentUserId() {
-        // Get authentication details from the security context.
+    public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() ||
                 "anonymousUser".equals(authentication.getPrincipal())) {
@@ -109,7 +114,6 @@ public class CommentServiceImpl implements CommentService {
         }
 
         String username = authentication.getName();
-        // Find the user by username and return their ID, or null if not found.
         return userRepository.findByUsername(username)
                 .map(User::getId)
                 .orElse(null);
